@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 import { fetchCategoryData, fetchCoordinatorData } from '../redux/actions'
 import {
     FormLabel,
@@ -21,7 +20,8 @@ import {
     CounterLabel,
     ErrorLabel,
 } from '../styles'
-
+import { validation } from '../helpers/validation'
+import { str2bool, convertedDate, multiplyDuration } from '../helpers/utils'
 
 export const MainForm = () => {
 
@@ -67,80 +67,44 @@ export const MainForm = () => {
 
     const dispatch = useDispatch();
 
-    const str2bool = value => value === 'paid event' ? true : false;
-    const convertedDate = moment(state.date).format('YYYY-MM-DDTHH:MM:SS');
-    const multiplyDuration = value => value * 3600;
-
-
     const handleValidation = () => {
-        let formIsValid = true;
-        let error = {
-            titleError: '',
-            descriptionError: '',
-            dateError: '',
-            feeError: '',
-            emailError: '',
-            urationError: '',
-        };
-        if (!state.title) {
-            formIsValid = false;
-            error.titleError = 'Cannot be empty.'
-        }
-        if (!state.description) {
-            formIsValid = false;
-            error.descriptionError = 'Cannot be empty.'
-        }
-        if (charactersLeft < 0) {
-            formIsValid = false
-            error.descriptionError = 'more than 140 characters!';
-        }
-        if (!state.date) {
-            formIsValid = false;
-            error.dateError = 'Date cannot be empty.'
-        }
-        if (state.duration) {
-            let isNumber = /^\d+$/.test(state.duration);
-            if (!isNumber) {
-                formIsValid = false;
-                error.durationError = 'Only digits please.'
-            }
-        }
-        if (isPaidEvent && !state.fee) {
-            formIsValid = false;
-            error.feeError = 'Fee cannot be empty in a paid event.'
-        }
-        if (!state.email) {
-            formIsValid = false;
-            error.emailError = 'Email cannot be empty.'
-        }
-        if (state.email) {
-            let lastAtPos = state.email.lastIndexOf('@');
-            let lastDotPos = state.email.lastIndexOf('.');
-
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && state.email.indexOf('@@') === -1 && lastDotPos > 2 && (state.email.length - lastDotPos) > 2)) {
-                formIsValid = false;
-                error.emailError = 'Email is not valid.';
-            }
-        }
+       const arrayOfErrors = validation(
+           state.title, 
+           state.description, 
+           charactersLeft, 
+           state.date, 
+           state.duration, 
+           isPaidEvent, 
+           state.fee, 
+           state.email);
 
         setError({
-            titleError: error.titleError,
-            descriptionError: error.descriptionError,
-            dateError: error.dateError,
-            feeError: error.feeError,
-            emailError: error.emailError,
-            durationError: error.durationError,
-
+            titleError: arrayOfErrors[0],
+            descriptionError: arrayOfErrors[1],
+            dateError: arrayOfErrors[2],
+            feeError: arrayOfErrors[3],
+            emailError: arrayOfErrors[4],
+            durationError: arrayOfErrors[5],
         })
 
-        return formIsValid;
+        return arrayOfErrors[6];
     }
 
     const history = useHistory();
     const onSubmit = (e) => {
         if (handleValidation()) {
-            console.log({ title, description, category_id: getCategoryID(categoryData, state.category), paid_event: str2bool(payment), event_fee: fee, reward, date: convertedDate, duration: multiplyDuration(state.duration), coordinator: { email: email, id: getCoordinatorID(coordinatorData, state.responsible) } });
-            history.push("/success");
+            console.log({ 
+                title, 
+                description, 
+                category_id: getCategoryID(categoryData, state.category), 
+                paid_event: str2bool(payment), 
+                event_fee: fee, 
+                reward, 
+                date: convertedDate(state.date), 
+                duration: multiplyDuration(state.duration), 
+                coordinator: { email: email, id: getCoordinatorID(coordinatorData, state.responsible) }});
+
+            history.push('/success');
         } else {
             alert('Form has errors.');
         }
