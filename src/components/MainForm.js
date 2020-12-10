@@ -25,6 +25,11 @@ import { str2bool, convertedDate, multiplyDuration } from '../helpers/utils'
 
 export const MainForm = () => {
 
+
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     const initialState = {
         title: '',
         description: '',
@@ -65,18 +70,17 @@ export const MainForm = () => {
 
     const { title, description, category, payment, fee, reward, email } = state;
 
-    const dispatch = useDispatch();
 
     const handleValidation = () => {
-       const arrayOfErrors = validation(
-           state.title, 
-           state.description, 
-           charactersLeft, 
-           state.date, 
-           state.duration, 
-           isPaidEvent, 
-           state.fee, 
-           state.email);
+        const arrayOfErrors = validation(
+            state.title,
+            state.description,
+            charactersLeft,
+            state.date,
+            state.duration,
+            isPaidEvent,
+            state.fee,
+            state.email);
 
         setError({
             titleError: arrayOfErrors[0],
@@ -90,19 +94,19 @@ export const MainForm = () => {
         return arrayOfErrors[6];
     }
 
-    const history = useHistory();
     const onSubmit = (e) => {
         if (handleValidation()) {
-            console.log({ 
-                title, 
-                description, 
-                category_id: getCategoryID(categoryData, state.category), 
-                paid_event: str2bool(payment), 
-                event_fee: fee, 
-                reward, 
-                date: convertedDate(state.date), 
-                duration: multiplyDuration(state.duration), 
-                coordinator: { email: email, id: getCoordinatorID(coordinatorData, state.responsible) }});
+            console.log({
+                title,
+                description,
+                category_id: getCategoryID(categoryData, state.category),
+                paid_event: str2bool(payment),
+                event_fee: fee,
+                reward,
+                date: convertedDate(fullTime).slice(0, -3),
+                duration: multiplyDuration(state.duration),
+                coordinator: { email: email, id: getCoordinatorID(coordinatorData, state.responsible) }
+            });
 
             history.push('/success');
         } else {
@@ -121,6 +125,7 @@ export const MainForm = () => {
     const coordinatorData = useSelector(state => state.formCoordinatorData);
     const isPaidEvent = str2bool(state.payment);
     const charactersLeft = 140 - state.description.length;
+    const fullTime = `${state.date}T${state.timeUnit}`;
 
     const getCoordinatorID = (object, value) => {
         const lastName = object.map(el => el.lastname);
@@ -144,7 +149,7 @@ export const MainForm = () => {
                     </FormRow>
                     <FormRow>
                         <FormLabel>Description: </FormLabel>
-                        <FormTextArea type="text" name="description" value={description} onChange={onChange} placeholder="Write about your event, be creative"/>
+                        <FormTextArea type="text" name="description" value={description} onChange={onChange} placeholder="Write about your event, be creative" />
                         <ErrorLabel>{change.descriptionError}</ErrorLabel>
                     </FormRow>
                     <FormRow>
@@ -184,7 +189,7 @@ export const MainForm = () => {
                     </FormRow>
                     <FormRow>
                         <FormLabel>Reward:</FormLabel>
-                        <FormInput type="text" name="reward" value={reward} onChange={onChange} placeholder="Number"/>
+                        <FormInput type="text" name="reward" value={reward} onChange={onChange} placeholder="Number" />
                         <FormInfo>points for attendance</FormInfo>
                     </FormRow>
                 </Container>
@@ -230,7 +235,7 @@ export const MainForm = () => {
                     </FormRow>
                     <FormRow>
                         <FormLabel>Duration:</FormLabel>
-                        <FormInput type="text" name="duration" onChange={onChange} placeholder="Number"/>
+                        <FormInput type="text" name="duration" onChange={onChange} placeholder="Number" />
                         <FormInfo>hour</FormInfo>
                     </FormRow>
                     <FormRow>
