@@ -122,14 +122,14 @@ export const MainForm = () => {
     const isPaidEvent = str2bool(state.payment);
     const charactersLeft = 140 - state.description.length;
 
-    function getCoordinatorID(object, value) {
-        const lastName = object.map(el => el.lastname)
-        return lastName.indexOf(value.split(" ").pop())
+    const getCoordinatorID = (object, value) => {
+        const lastName = object.map(el => el.lastname);
+        return lastName.indexOf(value.split(" ").pop());
     }
 
-    function getCategoryID(object, value) {
-        const name = object.map(el => el.name)
-        return name.indexOf(value)
+    const getCategoryID = (object, value) => {
+        const name = object.map(el => el.name);
+        return name.indexOf(value);
     }
 
     return (
