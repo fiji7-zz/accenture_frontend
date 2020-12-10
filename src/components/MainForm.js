@@ -175,12 +175,12 @@ export const MainForm = () => {
                     <ContainerTitle>About</ContainerTitle>
                     <FormRow>
                         <FormLabel>Title</FormLabel>
-                        <FormInput type="text" name="title" value={title} onChange={onChange} />
+                        <FormInput type="text" name="title" value={title} onChange={onChange} placeholder="Make it short and clear" />
                         <ErrorLabel>{change.titleError}</ErrorLabel>
                     </FormRow>
                     <FormRow>
                         <FormLabel>Description: </FormLabel>
-                        <FormTextArea type="text" name="description" value={description} onChange={onChange} />
+                        <FormTextArea type="text" name="description" value={description} onChange={onChange} placeholder="Write about your event, be creative"/>
                         <ErrorLabel>{change.descriptionError}</ErrorLabel>
                     </FormRow>
                     <FormRow>
@@ -220,7 +220,7 @@ export const MainForm = () => {
                     </FormRow>
                     <FormRow>
                         <FormLabel>Reward:</FormLabel>
-                        <FormInput type="text" name="reward" value={reward} onChange={onChange} />
+                        <FormInput type="text" name="reward" value={reward} onChange={onChange} placeholder="Number"/>
                         <FormInfo>points for attendance</FormInfo>
                     </FormRow>
                 </Container>
@@ -266,7 +266,7 @@ export const MainForm = () => {
                     </FormRow>
                     <FormRow>
                         <FormLabel>Duration:</FormLabel>
-                        <FormInput type="text" name="duration" onChange={onChange} />
+                        <FormInput type="text" name="duration" onChange={onChange} placeholder="Number"/>
                         <FormInfo>hour</FormInfo>
                     </FormRow>
                     <FormRow>
