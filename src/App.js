@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import { MainForm } from './MainForm'
+import { Modal } from './Modal'
+import { Main, HeadLine, Header } from './styles'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Main>
+      <HeadLine></HeadLine>
+      <Header>New event</Header>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <MainForm />
+          </Route>
+          <Route path="/success" >
+            <Modal />
+          </Route>
+        </Switch>
+      </Router>
+    </Main>
   );
 }
 
 export default App;
+
