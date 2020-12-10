@@ -2,7 +2,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { fetchCategoryData, fetchCoordinatorData } from './redux/actions'
+import { fetchCategoryData, fetchCoordinatorData } from '../redux/actions'
 import {
     FormLabel,
     FormInput,
@@ -20,7 +20,7 @@ import {
     Counter,
     CounterLabel,
     ErrorLabel,
-} from './styles'
+} from '../styles'
 
 
 export const MainForm = () => {

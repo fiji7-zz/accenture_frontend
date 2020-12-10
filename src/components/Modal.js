@@ -1,5 +1,5 @@
 import React  from 'react';
-import { ModalContainer, ModalTitle, ModalInfo } from './styles'
+import { ModalContainer, ModalTitle, ModalInfo } from '../styles'
 
 export const Modal = () => {
  

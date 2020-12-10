@@ -4,8 +4,8 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import { MainForm } from './MainForm'
-import { Modal } from './Modal'
+import { MainForm } from './components/MainForm'
+import { Modal } from './components/Modal'
 import { Main, HeadLine, Header } from './styles'
 
 function App() {
