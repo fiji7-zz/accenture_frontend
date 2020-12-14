@@ -21,12 +21,10 @@ import {
     ErrorLabel,
 } from '../styles'
 import { validation } from '../helpers/validation'
-import { str2bool, convertedDate, multiplyDuration, changeTimeOutput } from '../helpers/utils'
+import { str2bool, multiplyDuration, changeTimeOutput } from '../helpers/utils'
 
 export const MainForm = () => {
-
-
-
+    
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -106,7 +104,7 @@ export const MainForm = () => {
                 paid_event: str2bool(payment),
                 event_fee: fee,
                 reward,
-                date: convertedDate(fullTime).slice(0, -3),
+                date: fullTime,
                 duration: multiplyDuration(state.duration),
                 coordinator: { email: email, id: getCoordinatorID(coordinatorData, state.responsible) }
             });
