@@ -21,7 +21,7 @@ import {
     ErrorLabel,
 } from '../styles'
 import { validation } from '../helpers/validation'
-import { str2bool, convertedDate, multiplyDuration } from '../helpers/utils'
+import { str2bool, convertedDate, multiplyDuration, changeTimeOutput } from '../helpers/utils'
 
 export const MainForm = () => {
 
@@ -51,7 +51,8 @@ export const MainForm = () => {
             dateError: '',
             feeError: '',
             emailError: '',
-            durationError: ''
+            durationError: '',
+            timeError: '',
         }
     })
 
@@ -80,7 +81,8 @@ export const MainForm = () => {
             state.duration,
             isPaidEvent,
             state.fee,
-            state.email);
+            state.email,
+            state.timeUnit);
 
         setError({
             titleError: arrayOfErrors[0],
@@ -89,9 +91,10 @@ export const MainForm = () => {
             feeError: arrayOfErrors[3],
             emailError: arrayOfErrors[4],
             durationError: arrayOfErrors[5],
+            timeError: arrayOfErrors[6],
         })
 
-        return arrayOfErrors[6];
+        return arrayOfErrors[7];
     }
 
     const onSubmit = (e) => {
@@ -125,7 +128,7 @@ export const MainForm = () => {
     const coordinatorData = useSelector(state => state.formCoordinatorData);
     const isPaidEvent = str2bool(state.payment);
     const charactersLeft = 140 - state.description.length;
-    const fullTime = `${state.date}T${state.timeUnit}`;
+    const fullTime = `${state.date}T${changeTimeOutput(state.time, state.timeUnit)}`;
 
     const getCoordinatorID = (object, value) => {
         const lastName = object.map(el => el.lastname);
@@ -185,7 +188,12 @@ export const MainForm = () => {
                             checked={state.payment === 'paid event' ? true : false}
                             onChange={onChange}
                         />
-                        {isPaidEvent && <ConditionalFormLabel><FormInput name="fee" value={fee} placeholder="Fee" onChange={onChange} /> $ <ErrorLabel>{change.feeError}</ErrorLabel></ConditionalFormLabel>}
+                        {isPaidEvent && <ConditionalFormLabel><FormInput name="fee" value={fee} placeholder="Fee" onChange={onChange} /> $</ConditionalFormLabel>}
+                    </FormRow>
+                    <FormRow>
+                        <Counter/>
+                        <Counter/>
+                        <ErrorLabel>{change.feeError}</ErrorLabel>
                     </FormRow>
                     <FormRow>
                         <FormLabel>Reward:</FormLabel>
@@ -227,11 +235,28 @@ export const MainForm = () => {
                         />
 
                         <FormInfo>at:</FormInfo>
-                        <FormInput type="time" name="timeUnit" onChange={onChange} />
+                        <FormInput type="text" name="timeUnit" onChange={onChange} placeholder="--:--"/>
+                        <FormLabelRadio>AM</FormLabelRadio>
+                        <FormInputRadio
+                            type="radio"
+                            name="time"
+                            value="am"
+                            checked={state.time === 'am' ? true : false}
+                            onChange={onChange}
+                        />
+                        <FormLabelRadio>PM</FormLabelRadio>
+                        <FormInputRadio
+                            type="radio"
+                            name="time"
+                            value="pm"
+                            checked={state.time === 'pm' ? true : false}
+                            onChange={onChange}
+                        />
                     </FormRow>
                     <FormRow>
                         <Counter />
                         <ErrorLabel>{change.dateError}</ErrorLabel>
+                        <ErrorLabel>{change.timeError}</ErrorLabel>
                     </FormRow>
                     <FormRow>
                         <FormLabel>Duration:</FormLabel>

@@ -1,5 +1,5 @@
 
-export const validation = (title, description, charactersLeft, date, duration, isPaidEvent, fee, email ) => {
+export const validation = (title, description, charactersLeft, date, duration, isPaidEvent, fee, email, timeUnit ) => {
     
     let formIsValid = true;
     let error = {
@@ -8,9 +8,13 @@ export const validation = (title, description, charactersLeft, date, duration, i
         dateError: '',
         feeError: '',
         emailError: '',
-        urationError: '',
+        durationError: '',
+        timeError: '',
     };
-    if (!title) {
+    const regex = /(((0[1-9])|([0-1][0-2])):([0-5])([0-9]))/;
+    let isValidTime = regex.test(timeUnit);
+
+    if (!title) {        
         formIsValid = false;
         error.titleError = 'Cannot be empty.'
     }
@@ -50,6 +54,10 @@ export const validation = (title, description, charactersLeft, date, duration, i
             error.emailError = 'Email is not valid.';
         }
     }
+    if (timeUnit.length > 5 || !isValidTime ) {
+        formIsValid = false;
+        error.timeError = 'Bad format'
+    }
 
     return [ 
          error.titleError,
@@ -58,6 +66,7 @@ export const validation = (title, description, charactersLeft, date, duration, i
          error.feeError,
          error.emailError,
          error.durationError,
+         error.timeError,
          formIsValid,
      ]
 }

@@ -99,6 +99,7 @@ export const CounterLabel = styled.div`
 export const ErrorLabel = styled.div`
 color: #fe8484;
 padding: 0px 20px;
+width: 25%;
 `
 export const Main = styled.div`
 background-color: whitesmoke;
